@@ -7,4 +7,5 @@
     <string name="okay_10">Okay (10%)</string>
     <string name="round_up_tip">Round up tip?</string>
     <string name="calculate_tip">Calculate Tip</string>
+    <string name="tip_to_give_is">Tip to give is:</string>
 </resources>

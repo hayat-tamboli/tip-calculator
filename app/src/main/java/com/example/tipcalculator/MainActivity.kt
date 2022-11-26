@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import com.example.tipcalculator.databinding.ActivityMainBinding
 import java.text.NumberFormat
 
@@ -16,7 +15,7 @@ import java.text.NumberFormat
 //}
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val buttonCal: Button = binding.buttonCalculateTip
         val billTextBox: EditText = binding.editTextBill
-        buttonCal.setOnClickListener(){
+        buttonCal.setOnClickListener{
             val billAmt: String = (billTextBox.text).toString()
             val billDbl : Double? = billAmt.toDoubleOrNull()
             calcBill(billDbl)
@@ -33,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private fun calcBill(billDbl: Double?) {
         if (billDbl == null) {
             binding.editTextBill.error = "Enter the bill amount!"
-            DisplayTip(0.0)
+            displayTip(0.0)
             return
         }
         val tipPercentage = when(binding.tipOptions.checkedRadioButtonId)
@@ -47,9 +46,9 @@ class MainActivity : AppCompatActivity() {
         if(binding.switchRoundUpTip.isChecked){
             final = kotlin.math.ceil(final)
         }
-        DisplayTip(final)
+        displayTip(final)
     }
-    private fun DisplayTip(amt: Double)
+    private fun displayTip(amt: Double)
     {
         val amtInDollars: String = NumberFormat.getCurrencyInstance().format(amt)
         binding.textView3.text = amtInDollars
