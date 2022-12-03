@@ -1,7 +1,11 @@
 package com.example.tipcalculator
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import com.example.tipcalculator.databinding.ActivityMainBinding
@@ -21,9 +25,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val buttonCal: Button = binding.buttonCalculateTip
         val billTextBox: EditText = binding.editTextBill
-        buttonCal.setOnClickListener{
+        billTextBox.setOnKeyListener { view, keyCode, _ -> handleKeyEvent(view, keyCode)
+        }
+        binding.buttonCalculateTip.setOnClickListener{
             val billAmt: String = (billTextBox.text).toString()
             val billDbl : Double? = billAmt.toDoubleOrNull()
             calcBill(billDbl)
@@ -42,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             R.id.radioBtnOkay -> 10.0
             else -> 20.0
         }
-        var final : Double = billDbl + (billDbl*tipPercentage)/100
+        var final : Double = (billDbl*tipPercentage)/100
         if(binding.switchRoundUpTip.isChecked){
             final = kotlin.math.ceil(final)
         }
@@ -52,5 +57,15 @@ class MainActivity : AppCompatActivity() {
     {
         val amtInDollars: String = NumberFormat.getCurrencyInstance().format(amt)
         binding.textView3.text = amtInDollars
+    }
+    private fun handleKeyEvent(view: View, keyCode: Int): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+            // Hide the keyboard
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+            return true
+        }
+        return false
     }
 }
